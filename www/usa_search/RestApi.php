@@ -84,6 +84,9 @@ class RequestResult {
 	// Indicates the HTTP status code that was returned.
 	public $httpStatusCode;
 	
+	// This will hold the response body.
+	public $responseBody;
+	
 	// Indicates that the request was performed successfully.
 	function succeeded() {
 		return $this->httpStatusCode == HttpStatusCodes::OK 
