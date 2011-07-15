@@ -9,6 +9,16 @@ class RestOptionsTests extends UnitTestCase {
 		$this->options = new RestOptions('http://www.google.com');
 	}
 	
+	function testUrlCannotBeNull() {
+		$this->expectException(new InvalidArgumentException('The URL must be provided.'));
+		new RestOptions(NULL);
+	}
+	
+	function testUrlCannotBeEmptyString() {
+		$this->expectException(new InvalidArgumentException('The URL must be provided.'));
+		new RestOptions('     ');
+	}
+	
 	function testUrlIsSet() {
 		$this->assertEqual($this->options->getUrl(), 'http://www.google.com');
 	}

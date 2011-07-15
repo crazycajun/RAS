@@ -30,7 +30,9 @@ class RestOptions {
 	private $requestTimeout = 15; 
 	
 	function __construct($url) {
-		$this->url = $url;
+		$trimmedUrl = trim($url);
+		if (empty($trimmedUrl)) throw new InvalidArgumentException('The URL must be provided.');
+		$this->url = $trimmedUrl;
 	}
 	
 	// Configures options for JSON input and converts the input into JSON.
