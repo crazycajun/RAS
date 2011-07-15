@@ -86,12 +86,37 @@ class RequestResult {
 	
 	// Indicates that the request was performed successfully.
 	function succeeded() {
-		return $this->httpStatusCode == HttpStatusCodes::OK;
+		return $this->httpStatusCode == HttpStatusCodes::OK 
+			|| $this->httpStatusCode == HttpStatusCodes::NoContent;
+	}
+	
+	// Always the opposite of succeeded, this is just a convenient method
+	// so that we don't have to negate succeeded whenever looking for failed
+	// conditions.
+	function failed() {
+		return ! $this->succeeded();
+	}
+	
+	// Indicates that the server timed out before providing a response.
+	function serverTimedOut() {
+		return $this->httpStatusCode == HttpStatusCodes::RequestTimeout
+			|| $this->httpStatusCode == HttpStatusCodes::GatewayTimeout;
+	}
+	
+	// Indicates that the server was unavailable to handle the request.
+	function serverUnavailable() {
+		return $this->httpStatusCode == HttpStatusCodes::InternalServerError
+			|| $this->httpStatusCode == HttpStatusCodes::ServiceUnavailable;
 	}
 }
 
-// The status codes that are recognized by the Request API.
+// The HTTP status codes that are recognized by the Request API.
 class HttpStatusCodes {
 	const OK = '200';
+	const NoContent = '204';
+	const RequestTimeout = '408';
+	const GatewayTimeout = '504';
+	const InternalServerError = '500';
+	const ServiceUnavailable = '503'; 
 }
 ?>
