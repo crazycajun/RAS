@@ -52,5 +52,10 @@ class RestOptionsTests extends UnitTestCase {
 		$this->expectException(new InvalidArgumentException('Timeout must be a positive, non-zero value.'));
 		$this->options->timeout(-234);
 	}
+	
+	function testRequestTimeoutCannotBeZero() {
+		$this->expectException(new InvalidArgumentException('Timeout must be a positive, non-zero value.'));
+		$this->options->timeout(0);
+	}
 }
 ?>
