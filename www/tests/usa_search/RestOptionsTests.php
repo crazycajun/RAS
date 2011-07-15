@@ -42,5 +42,10 @@ class RestOptionsTests extends UnitTestCase {
 		$this->options->timeout(585);
 		$this->assertEqual($this->options->getRequestTimeout(), 585);
 	}
+	
+	function testRequestTimeoutReturnsInstance() {
+		$instance = $this->options->timeout(5);
+		$this->assertIdentical($this->options, $instance);
+	}
 }
 ?>

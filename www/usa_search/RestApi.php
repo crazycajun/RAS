@@ -43,7 +43,7 @@ class RestOptions {
 	// Sets the request timeout in seconds.
 	function timeout($value) {
 		$this->requestTimeout = $value;
-		
+		return $this;
 	}
 	
 	// The getters for the fields on the instance. These methods should
