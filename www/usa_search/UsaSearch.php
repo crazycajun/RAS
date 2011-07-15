@@ -6,12 +6,14 @@ class UsaSearch {
 	
 	private $restApi = null;
 	private $config = null;
+	private $parser = null;
 	
 	// Constructs an instance of the class with the restApi and config specified.
 	// If the config is null, the class constructs a default configuration instance.
-	function __construct($restApi, $config = null) {
-		$this->restApi = $restApi;
-		$this->config = is_null($config) ? new ApplicationConfiguration() : $config; 
+	function __construct($restApi = null, $parser = null, $config = null) {
+		$this->restApi = is_null($restApi) ? new CurlRestApi() : $restApi;
+		$this->parser = is_null($parser) ? new UsaSearchResultParser() : $parser;
+		$this->config = is_null($config) ? new ApplicationConfiguration() : $config;
 	}
 	
 	// Searches the recall information for the query specified. The Query must be non-null
@@ -24,21 +26,31 @@ class UsaSearch {
 			->timeout($this->config->UsaRequestTimeoutInSeconds)
 			->httpGet($this->buildParamsArray($query));
 			
-		$this->restApi->get($options);
+		$result = $this->restApi->get($options);
+		return $this->parser->parse($result);
 	}
 	
 	// Builds the parameter array based on the query object.
 	public function buildParamsArray($query) {
 		$autoDetails = is_null($query->autoDetails) ? new AutoDetails() : $query->autoDetails;
-		return array(
+		$params = array(
 			"api_key" => $this->config->UsaSearchApiKey,
 			"format" => $this->config->UsaSearchFormat,
-			"make" => $autoDetails->make,
-			"model" => $autoDetails->model,
-			"year" => $autoDetails->year,
-			"query" => $query->searchTerm,
 			"page" => $query->page
 		);
+		
+		$this->addKeyIfSet('query', $query->searchTerm, $params);
+		$this->addKeyIfSet('make', $autoDetails->make, $params);
+		$this->addKeyIfSet('model', $autoDetails->model, $params);
+		$this->addKeyIfSet('year', $autoDetails->year, $params);
+		return $params;
+	}
+	
+	// Adds the key value pair to the array if the value is set.
+	private function addKeyIfSet($key, $value, &$arr) {
+		if (isset($value)) {
+			$arr[$key] = $value;
+		}
 	}
 	
 	

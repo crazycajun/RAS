@@ -59,15 +59,19 @@ class UsaSearchBuildParams extends UnitTestCase {
 		$query = new Query();
 		$search = new UsaSearch(null);
 		$this->params = $search->buildParamsArray($query);
-		$this->assertKeyValueInParams('query', null);
-		$this->assertKeyValueInParams('make', null);
-		$this->assertKeyValueInParams('model', null);
-		$this->assertKeyValueInParams('year', null);
+		$this->assertKeyMissing('query', null);
+		$this->assertKeyMissing('make', null);
+		$this->assertKeyMissing('model', null);
+		$this->assertKeyMissing('year', null);
 	}
 	
 	function assertKeyValueInParams($key, $value) {
 		$this->assertTrue(array_key_exists($key, $this->params), 'The array does not contain the key: ' . $key);
 		$this->assertEqual($this->params[$key], $value);
+	}
+	
+	function assertKeyMissing($key) {
+		$this->assertFalse(array_key_exists($key, $this->params), 'The array should not contain the key: ' . $key);
 	}
 }
 

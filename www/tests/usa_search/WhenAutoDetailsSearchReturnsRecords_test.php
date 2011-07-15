@@ -5,6 +5,7 @@ require_once '../../usa_search/UsaSearch.php';
 require_once '../../usa_search/Query.php';
 require_once '../../usa_search/RestApi.php';
 require_once '../../ApplicationConfiguration.php';
+require_once '../../ProductInfo.php';
 
 class WhenAutoDetailsSearchReturnsRecords extends UnitTestCase {
 	
@@ -21,7 +22,7 @@ class WhenAutoDetailsSearchReturnsRecords extends UnitTestCase {
 		
 		$this->fakeRestService = new FakeRestService();
 		$this->config = new ApplicationConfiguration();
-		$api = new UsaSearch($this->fakeRestService);
+		$api = new UsaSearch($this->fakeRestService, new FakeRequestParser());
 		$this->searchResult = $api->search($this->query);
 	}
 	
@@ -34,18 +35,20 @@ class WhenAutoDetailsSearchReturnsRecords extends UnitTestCase {
 	}
 	
 	function testRestOptionsHasTheseParams() {
-		$expectedParams = 'api_key=195dbebb8f6c7fd8a7d143d5d13c2a76&format=json&make=Toyota&model=Prius&page=1';
+		$expectedParams = 'api_key=195dbebb8f6c7fd8a7d143d5d13c2a76&format=json&page=1&make=Toyota&model=Prius';
 		$this->assertEqual($this->fakeRestService->options->getParams(), $expectedParams);
 	}
 	
-	function testSearchResultIndicatesSuccess() {
-		$this->assertTrue($this->searchResult->Succeeded, 'The search result did not indicate success.');
+	function testResultReturnedFromParser() {
+		$this->assertEqual($this->searchResult->totalMatches, 1);
+		$records = $this->searchResult->getRecords();
+		$pi = $records[0];
+		$this->assertEqual($pi->manufacturer, 'Toyota');
 	}
 }
 
 class FakeRestService implements RestApi {
 	public $options = NULL;
-	public $result = NULL;
 	
 	public function forUrl($url) {
 		return new RestOptions($url);
@@ -53,7 +56,21 @@ class FakeRestService implements RestApi {
 	
 	public function get($restOptions) {
 		$this->options = $restOptions;
-		return $this->result;
+		return new RequestResult();
+	}
+}
+
+class FakeRequestParser {
+	function parse($result) {
+		$searchResult = new SearchResult();
+		$searchResult->totalMatches = 1;
+		$searchResult->success = true;
+		
+		$info = new ProductInfo();
+		$info->manufacturer = 'Toyota';
+		
+		$searchResult->setRecords(array($info));
+		return $searchResult;
 	}
 }
 ?>

@@ -2,6 +2,8 @@
 require_once '../simpletest/autorun.php';
 require_once '../../usa_search/UsaSearch.php';
 require_once '../../usa_search/Query.php';
+require_once '../../usa_search/CurlRestApi.php';
+require_once '../../usa_search/UsaSearchResultParser.php';
 
 class WhenErrorsDetectedInQuery extends UnitTestCase {
 
