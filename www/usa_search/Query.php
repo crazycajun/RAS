@@ -8,6 +8,9 @@ class Query {
 	
 	// Details for an automotive search.
 	public $autoDetails = NULL;
+	
+	// The page of data to request.
+	public $page = 1;
 }
 
 // The details to make searching against the API for auto recalls quicker.

@@ -29,12 +29,15 @@ class UsaSearch {
 	
 	// Builds the parameter array based on the query object.
 	public function buildParamsArray($query) {
+		$autoDetails = is_null($query->autoDetails) ? new AutoDetails() : $query->autoDetails;
 		return array(
 			"api_key" => $this->config->UsaSearchApiKey,
 			"format" => $this->config->UsaSearchFormat,
-			"make" => $query->autoDetails->make,
-			"model" => $query->autoDetails->model,
-			"page" => 1
+			"make" => $autoDetails->make,
+			"model" => $autoDetails->model,
+			"year" => $autoDetails->year,
+			"query" => $query->searchTerm,
+			"page" => $query->page
 		);
 	}
 	
