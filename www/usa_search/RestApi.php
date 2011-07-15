@@ -42,6 +42,12 @@ class RestOptions {
 		return $this;
 	}
 	
+	// Configures options for HTTP GET input and converts the input into a query string.
+	function httpGet($input) {
+		$this->params = http_build_query($input);
+		return $this;
+	}
+	
 	// Sets the request timeout in seconds (non-zero, positive value).
 	function timeout($value) {
 		if ($value <= 0) throw new InvalidArgumentException('Timeout must be a positive, non-zero value.');

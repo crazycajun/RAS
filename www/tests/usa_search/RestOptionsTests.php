@@ -67,5 +67,15 @@ class RestOptionsTests extends UnitTestCase {
 		$this->expectException(new InvalidArgumentException('Timeout must be a positive, non-zero value.'));
 		$this->options->timeout(0);
 	}
+	
+	function testHttpGetSetsParams() {
+		$this->options->httpGet(array("foo" => "foo bar"));
+		$this->assertEqual($this->options->getParams(), "foo=foo+bar");
+	}
+	
+	function testHttpGetReturnsInstance() {
+		$instance = $this->options->httpGet(array("q" => "r"));
+		$this->assertIdentical($this->options, $instance);
+	}
 }
 ?>
