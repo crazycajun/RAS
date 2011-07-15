@@ -13,6 +13,10 @@ class RestOptionsTests extends UnitTestCase {
 		$this->assertEqual($this->options->url, 'http://www.google.com');
 	}
 	
+	function testContentTypeDefaultIs() {
+		$this->assertEqual($this->options->getContentType(), RestOptions::PlainTextContentType);
+	}
+	
 	function testJsonArrayIsJson() {
 		$input = array(
 			'foo' => 'bar',
@@ -30,8 +34,13 @@ class RestOptionsTests extends UnitTestCase {
 	}
 	
 	function testJsonSetsContentType() {
-		$contentType = $this->options->json(array("c" => "d"))->contentType;
+		$contentType = $this->options->json(array("c" => "d"))->getContentType();
 		$this->assertEqual($contentType, RestOptions::JsonContentType);
+	}
+	
+	function testRequestTimeoutIsSet() {
+		$this->options->timeout(585);
+		$this->assertEqual($this->options->getRequestTimeout(), 585);
 	}
 }
 ?>
