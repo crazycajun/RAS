@@ -40,8 +40,9 @@ class RestOptions {
 		return $this;
 	}
 	
-	// Sets the request timeout in seconds.
+	// Sets the request timeout in seconds (non-zero, positive value).
 	function timeout($value) {
+		if ($value <= 0) throw new InvalidArgumentException('Timeout must be a positive, non-zero value.');
 		$this->requestTimeout = $value;
 		return $this;
 	}
