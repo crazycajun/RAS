@@ -78,4 +78,20 @@ class RestOptions {
 	}
 }
 
+// The class returned from the RestApi methods.
+class RequestResult {
+	
+	// Indicates the HTTP status code that was returned.
+	public $httpStatusCode;
+	
+	// Indicates that the request was performed successfully.
+	function succeeded() {
+		return $this->httpStatusCode == HttpStatusCodes::OK;
+	}
+}
+
+// The status codes that are recognized by the Request API.
+class HttpStatusCodes {
+	const OK = '200';
+}
 ?>
