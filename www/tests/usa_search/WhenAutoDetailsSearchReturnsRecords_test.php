@@ -34,7 +34,7 @@ class WhenAutoDetailsSearchReturnsRecords extends UnitTestCase {
 	}
 	
 	function testRestOptionsHasTheseParams() {
-		$expectedParams = 'api_key=TODO%3A+Get+This&format=json&make=Toyota&model=Prius&page=1';
+		$expectedParams = 'api_key=195dbebb8f6c7fd8a7d143d5d13c2a76&format=json&make=Toyota&model=Prius&page=1';
 		$this->assertEqual($this->fakeRestService->options->getParams(), $expectedParams);
 	}
 	
