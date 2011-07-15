@@ -6,6 +6,10 @@ interface RestApi {
 	// This method acts as a builder for the configuration properties for the REST request. It 
 	// returns a RestOptions entity.
 	public function forUrl($url);
+	
+	// The method takes the RestOptions instance and invokes the corresponding request. A 
+	// RequestResult instance will be returned with the details.
+	public function get($restOpts);
 }
 
 // Fluent options class that is used to pass REST configuration details to the RestApi instance.
