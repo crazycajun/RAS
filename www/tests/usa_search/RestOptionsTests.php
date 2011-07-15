@@ -30,7 +30,8 @@ class RestOptionsTests extends UnitTestCase {
 	}
 	
 	function testJsonSetsContentType() {
-		$this->assertEqual(RestOptions::JsonContentType, $this->options->json(array("c" => "d"))->contentType);
+		$contentType = $this->options->json(array("c" => "d"))->contentType;
+		$this->assertEqual($contentType, RestOptions::JsonContentType);
 	}
 }
 ?>
