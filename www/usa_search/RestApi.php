@@ -18,10 +18,10 @@ class RestOptions {
 	const PlainTextContentType = 'text/plain';
 	
 	// The url for the rest service.
-	public $url = NULL;
+	private $url = NULL;
 	
 	// REST parameters.
-	public $params = NULL;
+	private $params = NULL;
 	
 	// The content type for the request.
 	private $contentType = self::PlainTextContentType;
@@ -54,6 +54,14 @@ class RestOptions {
 	
 	function getContentType() {
 		return $this->contentType;
+	}
+	
+	function getUrl() {
+		return $this->url;
+	}
+	
+	function getParams() {
+		return $this->params;
 	}
 }
 

@@ -10,7 +10,7 @@ class RestOptionsTests extends UnitTestCase {
 	}
 	
 	function testUrlIsSet() {
-		$this->assertEqual($this->options->url, 'http://www.google.com');
+		$this->assertEqual($this->options->getUrl(), 'http://www.google.com');
 	}
 	
 	function testContentTypeDefaultIs() {
@@ -25,7 +25,7 @@ class RestOptionsTests extends UnitTestCase {
 		);
 		
 		$this->options->json($input);
-		$this->assertEqual($this->options->params, '{"foo":"bar","pie":"cherry","v":6}');
+		$this->assertEqual($this->options->getParams(), '{"foo":"bar","pie":"cherry","v":6}');
 	}
 	
 	function testJsonArrayReturnsRestOptionsInstance() {
