@@ -23,7 +23,7 @@ class AutoDetails {
 // This class contains the details of the query's result.
 class SearchResult {
 	// The total number of records that matched the query.
-	public $totalMathces;
+	public $totalMatches;
 	
 	// The parsed product recalls. This will be an array of 
 	// ProductInfo records and will never be null.
@@ -41,7 +41,7 @@ class SearchResult {
 	public $errors;
 	
 	function __construct() {
-		$records = array();
+		$this->records = array();
 	}
 	
 	// The parsed product recalls. This will be an array of 
