@@ -1,3 +1,5 @@
+<?php require_once('utils/header_funcs.php'); ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--
 
@@ -13,6 +15,12 @@
 		<meta name="keywords" content="" />
 		<meta name="description" content="" />
 		<link rel="stylesheet" type="text/css" href="content/style.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+		<script type="text/javascript">
+			var ras = {
+				currentDir: '<?php echo $rasCurrentDir; ?>';
+			};
+		</script>
 	</head>
 	<body>
 
