@@ -12,11 +12,23 @@ you can sign up for recall notifications.
 </p>
 
 <form id="registrationForm" action="registerMember.php" method="post">
-	<p><?php echo rasRequiredLabel("Name", "memberName"); ?><br />
-	<?php echo rasRequiredTextField(array(
-		 'name' => 'memberName'
-		,'maxlength' => 256
-	)); ?></p>
+	<p>
+		<?php echo rasRequiredLabel("Name", "memberName"); ?><br />
+		<?php echo rasRequiredTextField(array(
+			 'name' => 'memberName'
+			,'id' => 'memberName'
+			,'maxlength' => 256
+		)); ?>
+	</p>
+	<p>
+		<?php echo rasRequiredLabel("Email", "memberEmail"); ?><br />
+		<?php echo rasRequiredTextField(array(
+			 'name' => 'memberEmail'
+			,'class' => 'email'
+			,'id' => 'memberEmail'
+			,'maxlength' => 256
+		)); ?>
+	</p>
 	<input type="submit" value="Register" />
 </form>
 
