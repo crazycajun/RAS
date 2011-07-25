@@ -29,6 +29,16 @@ you can sign up for recall notifications.
 			,'maxlength' => 256
 		)); ?>
 	</p>
+	<p>
+		<?php echo rasRequiredLabel("Password", "memberPassword"); ?><br />
+		<?php echo rasRequiredPassword(array(
+			 'name' => 'memberPassword'
+			,'id' => 'memberPassword'
+			,'maxlength' => 256
+		)); ?><br />
+		<?php echo rasRequiredLabel("Confirm Password", "memberPasswordConfirm"); ?><br />
+		<?php echo rasPasswordConfirmation('memberPassword'); ?>
+	</p>
 	<input type="submit" value="Register" />
 </form>
 
