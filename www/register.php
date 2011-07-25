@@ -47,6 +47,7 @@ you can sign up for recall notifications.
 	// Register with JQuery's document ready function to ensure
 	// that jQuery Validate plugin is validating the form.
 	$(function(){
+		// Register the form for validation with JQuery.validate
 		$('#registrationForm').validate();
 	});
 })(jQuery);
