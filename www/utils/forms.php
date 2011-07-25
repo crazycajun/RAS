@@ -1,28 +1,66 @@
 <?php
 
+// Accepts the attributes and returns a string to be
+// used as output to build a password field with a corresponding
+// confirm field.
+function rasRequiredPassword($attrs = null) {
+	$opts = rasEnsureArray($attrs);
+	rasAddRequiredClass($opts);
+	return rasPasswordField($opts);
+}
+
+// Builds a password input field based on the attrs specified.
+function rasPasswordField($attrs = null) {
+	$opts = rasEnsureArray($attrs);
+	if(array_key_exists('value', $opts)) {
+		unset($opts['value']);
+	}
+	return rasInputField('password', $opts);
+}
+
+// Renders a password field that will require confirmation with 
+// the field identified as the parameter using JQuery.validate.
+function rasPasswordConfirmation($comparisonField) {
+	$attrs = array(
+		 'id' => $comparisonField . "Confirm"
+		,'name' => $comparisonField . "Confirm"
+		,'equalTo' => '#' . $comparisonField
+	);
+	return rasPasswordField($attrs);
+}
+
 // Accepts the specified attributes as input and outputs a 
 // text field with the meta data and adds meta data to make 
 // the field required on the UI.
 function rasRequiredTextField($attrs = null) {
 	$opts = rasEnsureArray($attrs);		
+	rasAddRequiredClass($opts);
+	return rasTextField($opts);
+}
+
+// Adds the CSS class definition to make the element required
+// with jQuery.validate plugin.
+function rasAddRequiredClass(&$opts) {
 	$class = array_key_exists('class', $opts) ? $opts['class'] . ' required' : 'required';
 	$opts['class'] = $class;
-	return rasTextField($opts);
 }
 
 // Accepts the specified attributes as input and outputs a 
 // text field with the meta data.
 function rasTextField($attrs = null) {
-	$opts = rasEnsureArray($attrs);
-		
+	$opts = rasEnsureArray($attrs);	
+	return rasInputField('text', $opts);
+}
+
+// Builds the specified input type for output.
+function rasInputField($type, $opts) {		
 	$pairs = '';
 	foreach($opts as $attr => $value) {
 		$pairs .= $attr . '="';
 		$pairs .= strtolower($attr) == 'value' ? addslashes($value) : $value;
 		$pairs .= '" ';
 	}
-	
-	return '<input type="text" ' . $pairs . '/>';
+	return '<input type="' . $type . '" ' . $pairs . '/>';
 }
 
 // Outputs a form label for the specified field. Setting the optional
