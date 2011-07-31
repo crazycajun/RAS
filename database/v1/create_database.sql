@@ -44,4 +44,4 @@ grant
 	on 
 		ras.* 
 	to 
-		'rasWebUsers'@'localhost'
+		'rasWebUsers'@'localhost';
