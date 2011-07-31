@@ -14,15 +14,12 @@
 
 create database if NOT exists ras;
 
-set @webUser = 'rasWebUsers';
-set @webUserHost = 'localhost';
-
 -- Remove if the user exists to prevent key violations.
 delete from 
 	mysql.user
 where
-	User = @webUser
-	and Host = @webUserHost;
+	User = 'rasWebUsers'
+	and Host = 'localhost';
 
 -- Create the user with the specified password.
 insert into mysql.user( 
@@ -31,7 +28,20 @@ insert into mysql.user(
 	,Password
 )
 values(
-	 @webUserHost
-	,@webUser
+	 'localhost'
+	,'rasWebUsers'
 	,'*C3D36B74FFD84DBD34A2A738742AE451B9A40445'
 );
+
+grant 
+	 SELECT
+	,INSERT
+	,UPDATE
+	,CREATE TEMPORARY TABLES
+	,EXECUTE
+	,LOCK TABLES
+	,TRIGGER 
+	on 
+		ras.* 
+	to 
+		'rasWebUsers'@'localhost'
