@@ -3,6 +3,7 @@
 class UserAccountRepository implements iUserAccountRepository {
 	
 	const MYSQL_DATE_FORMAT = 'Y-m-d H:i:s';
+	const ACTIVATION_TOKEN_SIZE = 48;
 	
 	private $database;
 	private $tokenGenerator;
@@ -19,7 +20,7 @@ class UserAccountRepository implements iUserAccountRepository {
 	function add($name, $email, $password) {
 		$db = $this->getDatabase();
 		$createdOn = $this->systemClock->now();
-		$token = $this->tokenGenerator->getToken(48);
+		$token = $this->tokenGenerator->getToken(self::ACTIVATION_TOKEN_SIZE);
 		
 		$statement = $db->prepare("insert into user_accounts(name, password, email, created_on, activation_token) " 
 			. "VALUES (:name, :password, :email, :createdOn, :activationToken)");
@@ -31,6 +32,7 @@ class UserAccountRepository implements iUserAccountRepository {
 		$statement->execute();
 		
 		$this->cleanUpDatabase();
+		return $token;
 	}
 	
 	// Returns the database or constructs a new one.

@@ -37,8 +37,14 @@ class UserAccountRepositoryTests extends UnitTestCase {
 		$this->assertEqual($row['name'], "Brian C.");
 		$this->assertEqual($row['email'], "brian@domain.com");
 		$this->assertEqual($row['password'], $pwdHash);
-		$this->assertEqual($row['activation_token'], "areallylongtokenreturnedthatisparsedusingsubstri");
+		$this->assertEqual($row['activation_token'], $this->tokenGen->getToken(UserAccountRepository::ACTIVATION_TOKEN_SIZE));
 		$this->assertEqual($row['created_on'], $this->systemClock->now()->format(UserAccountRepository::MYSQL_DATE_FORMAT));
+	}
+	
+	function testAccountAddReturnsTheActivationToken() {
+		$pwdHash = sha1('p@$$w0rd');
+		$activationToken = $this->repository->add("Brian C.", "brian@domain.com", 'p@$$w0rd');
+		$this->assertEqual($activationToken, $this->tokenGen->getToken(UserAccountRepository::ACTIVATION_TOKEN_SIZE));
 	}
 	
 	function tearDown() {
