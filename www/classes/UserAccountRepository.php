@@ -17,7 +17,7 @@ class UserAccountRepository implements iUserAccountRepository {
 	function __construct($tokenGenerator = null, $database = null, $systemClock = null) {
 		$this->database = $database;
 		$this->databaseInjected = $database != null;
-		$this->tokenGenerator = $tokenGenerator;
+		$this->tokenGenerator = $tokenGenerator == null ? new TokenGenerator() : $tokenGenerator;
 		$this->systemClock = $systemClock == null ? new SystemClock() : $systemClock;
 	}
 	
