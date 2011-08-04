@@ -1,7 +1,11 @@
 <?php
 
+// This is the class responsible for handling persistent interactions
+// with the user account entity.
 class UserAccountRepository implements iUserAccountRepository {
 	
+	// The date time format required to correctly insert dates into
+	// the MySQL database engine.
 	const MYSQL_DATE_FORMAT = 'Y-m-d H:i:s';
 	const ACTIVATION_TOKEN_SIZE = 48;
 	
@@ -17,6 +21,9 @@ class UserAccountRepository implements iUserAccountRepository {
 		$this->systemClock = $systemClock == null ? new SystemClock() : $systemClock;
 	}
 	
+	// Adds a user account to the table and returns the corresponding activation
+	// token for the account. This method does not verify parameters as this is
+	// the requirement of the caller.
 	function add($name, $email, $password) {
 		$db = $this->getDatabase();
 		$createdOn = $this->systemClock->now();
