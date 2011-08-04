@@ -17,7 +17,7 @@ class UserAccountRepositoryTests extends UnitTestCase {
 		$this->tokenGen = new FakeTokenGenerator();
 		$this->database = new PDO($config->server, $config->user, $config->pwd);
 		$this->database->beginTransaction();
-		$this->systemClock = new SystemClock();
+		$this->systemClock = new TestSystemClock();
 		$this->repository = new UserAccountRepository($this->tokenGen, $this->database, $this->systemClock);
 	}
 	
