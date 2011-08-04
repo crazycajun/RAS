@@ -16,4 +16,4 @@ create table if NOT exists user_accounts(
 	,activated_on datetime null
 	,activation_token varchar(48) not null
 	,deactivated_on datetime null
-);
+) ENGINE = INNODB;
