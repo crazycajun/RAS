@@ -1,37 +1,28 @@
 <?php
 
+	// Include template header.
+	$pageName="Search";
+	include('templates/header.php');
+
 	require_once('forms/AutoSearchForm.php');
 	require_once('usa_search/UsaSearch.php');
 	require_once('usa_search/Query.php');
 	
 	
+	// Create the auto search form and display it.
 	$autoSearchForm = new AutoSearchForm();
 	$autoSearchForm->echoForm("search.php");
 	
+	// If the form has been submitted, generate the
+	// results and display them.
 	if(!empty($_GET)) {
-		$query = new Query();
-		
-		$autoDetails = new AutoDetails();
-		$autoDetails->make = $_GET['make'];
-		$autoDetails->model = $_GET['model'];
-		$autoDetails->year = $_GET['year'];
-		
-		$query->autoDetails = $autoDetails;
+		$query = $autoSearchForm->buildSearchQuery();
 		$usaSearch = new UsaSearch();
 		$results = $usaSearch->search($query);
 		
-		if($results->success) {
-			echo "<h1>Results</h1>";
-			foreach($results->getRecords() as $rec) {
-				echo "<p>$rec</p><hr />";
-			}
-		} else {
-			echo "<font color=\"red\"><h1>Errors</h1>";
-			foreach($results->errors as $err) {
-				echo "<p>$err</p>";
-			}
-			echo "</font>";
-		}
+		$autoSearchForm->echoResults($results);
 	}
 	
+	// Include the footer.
+	include('templates/footer.php');
 ?>
