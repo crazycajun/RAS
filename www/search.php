@@ -1,8 +1,8 @@
 <?php
 
 	// Include template header.
-	$pageName="Search";
-	include('templates/header.php');
+	$pageName="search";
+	include_once('templates/header.php');
 
 	require_once('ApplicationConfiguration.php');
 	require_once('ProductInfo.php');
@@ -29,5 +29,5 @@
 	}
 	
 	// Include the footer.
-	include('templates/footer.php');
+	include_once('templates/footer.php');
 ?>
