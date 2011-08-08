@@ -1,6 +1,7 @@
 <?php
 
 $pageName = "register";
+require_once('classes/FlashMessenger.php');
 require_once('utils/forms.php');
 include('templates/header.php'); 
 
@@ -10,6 +11,8 @@ include('templates/header.php');
 <p>Fill this form out to register as a member of the Recall Alert System. As a member, 
 you can sign up for recall notifications.
 </p>
+
+<?php rasFlash(); ?>
 
 <form id="registrationForm" action="registerMember.php" method="post">
 	<p>

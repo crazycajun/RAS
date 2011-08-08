@@ -83,4 +83,30 @@ function rasEnsureArray($value) {
 	return $opts;
 }
 
+// Reads the flash from the session and displays it if it has contents.
+function rasFlash() {
+	$flashMessenger = new FlashMessenger();
+	$messages = $flashMessenger->flash();
+
+	if (count($messages) > 0) {
+$flashHeader = <<<FLASHHEADER
+	<div class="ui-widget">
+		<div class="ui-state-highlight ui-corner-all ras-ui-flash">
+			<ul>
+FLASHHEADER;
+		echo $flashHeader;
+
+		foreach($messages as $message) {
+			echo '<li>' . $message . '</li>';
+		}
+		
+$flashFooter = <<<FLASHFOOTER
+			</ul>	
+		</div>
+	</div>
+FLASHFOOTER;
+		echo $flashFooter;
+	}
+}
+
 ?>

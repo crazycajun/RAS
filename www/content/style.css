@@ -431,3 +431,9 @@ max-width: 2.5em;
 .rasRequiredAsterisk {
 	color: #f00;
 }
+
+div.ras-ui-flash ul { 
+	padding-left: 2em;
+	padding-right; 2em;
+	padding-top: .5em;
+}
