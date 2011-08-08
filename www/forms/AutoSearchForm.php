@@ -42,15 +42,37 @@ class AutoSearchForm implements SearchForm {
 	public function echoResults($results) {
 		if($results->success) {
 			echo "<h1>Results</h1>";
+			echo "<table>\n";
+			echo "\t<tr>";
+			echo "\t\t<th>Description</th>\n";
+			echo "\t\t<th>Manufacture</th>\n";
+			echo "\t\t<th>Date Recalled</th>\n";
+			echo "\t\t<th>URL</th>\n";
+			echo "\t</tr>\n";
+			
 			foreach($results->getRecords() as $rec) {
-				echo "<p>$rec</p><hr />";
+				echo "\t<tr>\n";
+				if(isset($rec->description))
+					echo "\t\t<td>" . $rec->description . "</td>\n";
+				if(isset($rec->manufacturer))
+					echo "\t\t<td>" . $rec->manufacturer . "</td>\n";
+				if(isset($rec->recalledOn))
+					echo "\t\t<td>" . $rec->recalledOn->format("n/j/Y") . "</td>\n";
+				if(isset($rec->recallURL))
+					echo "\t\t<td>" . $rec->recallURL . "</td>\n";
+				echo "\t<tr>\n";
 			}
+			echo "</table>";
 		} else {
-			echo "<font color=\"red\"><h1>Errors</h1>";
 			foreach($results->errors as $err) {
-				echo "<p>$err</p>";
+				if($err->succeeded()) {
+					echo "<p>No results.</p>";
+				} else {
+					echo "<font color=\"red\"><h1>Error!</h1>\n";
+					echo "<h3>HTTP Status Code " . $err->httpStatusCode . "</h3>\n";
+					echo "<p>" . $err->responseBody . "</p></font>\n";
+				}
 			}
-			echo "</font>";
 		}
 	}
 }
