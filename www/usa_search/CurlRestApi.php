@@ -1,7 +1,5 @@
 <?php
 
-require_once('RestApi.php');
-
 // This class is the true implementation for interfacing with REST APIs.
 // It is based off of the blog post found here:
 //	http://www.gen-x-design.com/archives/making-restful-requests-in-php/
