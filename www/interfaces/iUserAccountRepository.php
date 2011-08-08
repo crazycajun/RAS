@@ -9,6 +9,10 @@ interface iUserAccountRepository {
 	// returns the registration token that is needed to 
 	// actvate the member account.
 	public function add($name, $email, $password);
+	
+	// Activates the account by matching the email with the
+	// token.
+	public function activate($email, $token);
 }
 
 ?>
