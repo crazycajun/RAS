@@ -24,7 +24,6 @@ class RegisterMemberTask {
 	// This is the method that does the work for the task. All 
 	// RAS tasks implement this method.
 	function execute() {
-		echo 'validating...<br />';
 		$validator = new Validator();
 		$result = $validator->required(self::NAME_KEY, "a name")
 			->requiredEmail(self::EMAIL_KEY, "an email address")
