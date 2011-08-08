@@ -25,17 +25,25 @@ class ActivateMemberTask {
 			->run();
 		
 		if ($result->isValid()) {
-			$token = $this->repository->activate(
+			$activated = $this->repository->activate(
 				 $_POST[self::EMAIL_KEY]
 				,$_POST[self::TOKEN_KEY]);
 			
-			$this->phpHelpers->redirect('activateSuccess.php');
+			if ($activated)
+				$this->phpHelpers->redirect('activateSuccess.php');
+			else
+				$this->failWithMessages(array('Activation failed, check the token and the account information.'));			
 		}
 		else {
-			$this->messenger->addMessages($result->messages());
-			$urlParams = $this->buildParams();
-			$this->phpHelpers->redirect('activate.php?' . http_build_query($urlParams));
+			$this->failWithMessages($result->messages());
 		}
+	}
+	
+	// Sets the flash messsages and redirects to the appropriate page.
+	function failWithMessages($messages) {
+		$this->messenger->addMessages($messages);
+		$urlParams = $this->buildParams();
+		$this->phpHelpers->redirect('activate.php?' . http_build_query($urlParams));
 	}
 	
 	// Creates the parameter array from the post data.

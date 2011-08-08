@@ -67,8 +67,24 @@ class ActivateMemberTaskTests extends UnitTestCase {
 	function testUserIsRedirectedToRegisterSuccessUrl() {
 		$this->setValidInputValuesIntoPost();
 		
+		$this->repository->returns('activate', true);
 		$this->task->execute();
 		$this->assertEqual($this->webHelpersSpy->redirectLocation, 'activateSuccess.php');
+	}
+	
+	function testUserIsRedirectedWhenActivationDoesNotSucceed() {
+		$this->setValidInputValuesIntoPost();
+		$this->repository->returns('activate', false);
+		$this->task->execute();
+		$this->assertEqual($this->webHelpersSpy->redirectLocation, 'activate.php?e=myemail%40domain.com&t=activation+token');
+	}
+	
+	function testFlashGetsActivationFailsActivationDoesNotSucceed() {
+		$this->setValidInputValuesIntoPost();
+		$this->repository->returns('activate', false);
+		$this->flashMessenger->expect('addMessages', 
+			array(array("Activation failed, check the token and the account information.")));
+		$this->task->execute();
 	}
 	
 	function setValidInputValuesIntoPost() {
