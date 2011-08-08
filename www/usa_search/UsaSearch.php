@@ -1,5 +1,9 @@
 <?php
 
+require_once('CurlRestApi.php');
+require_once('UsaSearchResultParser.php');
+require_once('ApplicationConfiguration.php');
+
 // This is the class responsible for interfacing with the rest api to 
 // request the recall information from the government website.
 class UsaSearch {
