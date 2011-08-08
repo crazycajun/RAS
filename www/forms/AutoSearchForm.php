@@ -1,7 +1,5 @@
 <?php
 
-require_once('SearchForm.php');
-
 // Automobile Search Form.
 class AutoSearchForm implements SearchForm {
 	
