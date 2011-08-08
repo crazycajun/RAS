@@ -27,7 +27,7 @@ class UsaSearch {
 			->httpGet($this->buildParamsArray($query));
 			
 		$result = $this->restApi->get($options);
-		return $this->parser->parse($result);
+		return $this->parser->parse($result->responseBody);
 	}
 	
 	// Builds the parameter array based on the query object.

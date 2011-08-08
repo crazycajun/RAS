@@ -10,6 +10,7 @@ require_once '../../ProductInfo.php';
 class WhenAutoDetailsSearchReturnsRecords extends UnitTestCase {
 	
 	private $fakeRestService = NULL;
+	private $fakeParser = null;
 	private $query = NULL;
 	private $config = NULL;
 		
@@ -22,7 +23,8 @@ class WhenAutoDetailsSearchReturnsRecords extends UnitTestCase {
 		
 		$this->fakeRestService = new FakeRestService();
 		$this->config = new ApplicationConfiguration();
-		$api = new UsaSearch($this->fakeRestService, new FakeRequestParser());
+		$this->fakeParser = new FakeRequestParser();
+		$api = new UsaSearch($this->fakeRestService, $this->fakeParser);
 		$this->searchResult = $api->search($this->query);
 	}
 	
@@ -45,6 +47,10 @@ class WhenAutoDetailsSearchReturnsRecords extends UnitTestCase {
 		$pi = $records[0];
 		$this->assertEqual($pi->manufacturer, 'Toyota');
 	}
+	
+	function testApiBodyPassedToParser() {
+		$this->assertEqual("The API's response", $this->fakeParser->resultToParse);
+	}
 }
 
 class FakeRestService implements RestApi {
@@ -56,12 +62,17 @@ class FakeRestService implements RestApi {
 	
 	public function get($restOptions) {
 		$this->options = $restOptions;
-		return new RequestResult();
+		$fakeResult = new RequestResult();
+		$fakeResult->responseBody = 'The API\'s response';
+		return $fakeResult;
 	}
 }
 
 class FakeRequestParser {
+	public $resultToParse;
+	
 	function parse($result) {
+		$this->resultToParse = $result;
 		$searchResult = new SearchResult();
 		$searchResult->totalMatches = 1;
 		$searchResult->success = true;
