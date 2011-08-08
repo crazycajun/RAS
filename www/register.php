@@ -21,6 +21,7 @@ you can sign up for recall notifications.
 			 'name' => 'memberName'
 			,'id' => 'memberName'
 			,'maxlength' => 256
+			,'value' => $_GET['n']
 		)); ?>
 	</p>
 	<p>
@@ -30,6 +31,7 @@ you can sign up for recall notifications.
 			,'class' => 'email'
 			,'id' => 'memberEmail'
 			,'maxlength' => 256
+			,'value' => $_GET['e']
 		)); ?>
 	</p>
 	<p>
