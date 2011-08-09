@@ -11,8 +11,12 @@ interface iUserAccountRepository {
 	public function add($name, $email, $password);
 	
 	// Activates the account by matching the email with the
-	// token.
+	// token. Returns true to indicate if the activation succeeded.
 	public function activate($email, $token);
+	
+	// Authenticates the member. Returns true if the user can be
+	// authenticated
+	public function authenticate($email, $password);
 }
 
 ?>

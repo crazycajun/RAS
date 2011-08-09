@@ -57,6 +57,21 @@ class UserAccountRepository implements iUserAccountRepository {
 		return $rowsAffected > 0;
 	}
 	
+	// Authenticates the user if possible.
+	function authenticate($email, $password) {
+		$db = $this->getDatabase();
+		$now = $this->systemClock->now();
+		$statement = $db->prepare('update user_accounts set login_on = :now '
+			. 'where email = :email and password = :password');
+		$statement->bindValue(':email', $email);
+		$statement->bindValue(':password', sha1($password));
+		$statement->bindValue(':now', $now->format(self::MYSQL_DATE_FORMAT));
+		$statement->execute();
+		$rowsAffected = $statement->rowCount();
+		$this->cleanUpDatabase();
+		return $rowsAffected > 0;
+	}
+	
 	// Returns the database or constructs a new one.
 	private function getDatabase() {
 		if ($this->databaseInjected) return $this->database;

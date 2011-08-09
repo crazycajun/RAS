@@ -91,6 +91,24 @@ class UserAccountRepositoryTests extends UnitTestCase {
 		$this->assertFalse($result, 'The member should not have been activated because s/he does not exist.');		
 	}
 	
+	function testUserIsAuthenticated() {
+		$this->repository->add("Brian C.", "brian@domain.com", 'p@$$w0rd');
+		$result = $this->repository->authenticate("brian@domain.com", 'p@$$w0rd');
+		$this->assertTrue($result, 'The user should have been auth\'ed.');
+	}
+	
+	function testUserIsNotAuthenticatedForInvalidEmail() {
+		$this->repository->add("Brian C.", "brian@domain.com", 'p@$$w0rd');
+		$result = $this->repository->authenticate("frank@domain.com", 'p@$$w0rd');
+		$this->assertFalse($result, 'The user should NOT be auth\'ed.');
+	}
+	
+	function testUserIsNotAuthenticatedForInvalidPassword() {
+		$this->repository->add("Brian C.", "brian@domain.com", 'p@$$w0rd');
+		$result = $this->repository->authenticate("brian@domain.com", 'jimmydean');
+		$this->assertFalse($result, 'The user should NOT be auth\'ed.');
+	}
+	
 	function tearDown() {
 		// This can help with troubleshooting instead of rolling back.
 		//$this->database->commit();
