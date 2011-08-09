@@ -15,8 +15,10 @@
 		<meta name="keywords" content="" />
 		<meta name="description" content="" />
 		<link rel="stylesheet" type="text/css" href="content/style.css" />
+		<link rel="stylesheet" type="text/css" href="content/blitzer/jquery-ui-1.8.14.custom.css" />
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 		<script type="text/javascript" src="content/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="content/jquery-ui-1.8.14.custom.min.js"></script>
 		<script type="text/javascript">
 			var ras = {
 				currentDir: '<?php echo $rasCurrentDir; ?>';

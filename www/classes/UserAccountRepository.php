@@ -42,6 +42,21 @@ class UserAccountRepository implements iUserAccountRepository {
 		return $token;
 	}
 	
+	// Activates the user account.
+	function activate($email, $token) {
+		$db = $this->getDatabase();
+		$activatedOn = $this->systemClock->now();
+		$statement = $db->prepare('update user_accounts set activated_on = :activatedOn '
+			. 'where email = :email and activation_token = :activationToken');
+		$statement->bindValue(':email', $email);
+		$statement->bindValue(':activationToken', $token);
+		$statement->bindValue(':activatedOn', $activatedOn->format(self::MYSQL_DATE_FORMAT));
+		$statement->execute();
+		$rowsAffected = $statement->rowCount();
+		$this->cleanUpDatabase();
+		return $rowsAffected > 0;
+	}
+	
 	// Returns the database or constructs a new one.
 	private function getDatabase() {
 		if ($this->databaseInjected) return $this->database;

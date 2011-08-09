@@ -47,6 +47,50 @@ class UserAccountRepositoryTests extends UnitTestCase {
 		$this->assertEqual($activationToken, $this->tokenGen->getToken(UserAccountRepository::ACTIVATION_TOKEN_SIZE));
 	}
 	
+	function testAccountIsActivated() {
+		$this->repository->add("Brian C.", "brian@domain.com", 'p@$$w0rd');
+		$token = $this->tokenGen->getToken(UserAccountRepository::ACTIVATION_TOKEN_SIZE);
+		$this->repository->activate("brian@domain.com", $token);
+		
+		$statement = $this->database->query(
+			"select activated_on from user_accounts where email = 'brian@domain.com' and activation_token = '" . $token . "';");
+		$row = $statement->fetch();
+		$this->assertEqual($row['activated_on'], $this->systemClock->now()->format(UserAccountRepository::MYSQL_DATE_FORMAT));
+	}
+	
+	function testActivateIndicatesActivationForValidEmailAndToken() {
+		$this->repository->add("Brian C.", "brian@domain.com", 'p@$$w0rd');
+		$token = $this->tokenGen->getToken(UserAccountRepository::ACTIVATION_TOKEN_SIZE);
+		$result = $this->repository->activate("brian@domain.com", $token);
+		$this->assertTrue($result, 'The activate method did not indicate success.');		
+	}
+	
+	function testActivateIndicatesFailureForInvalidEmail() {
+		$this->repository->add("Brian C.", "brian@domain.com", 'p@$$w0rd');
+		$token = $this->tokenGen->getToken(UserAccountRepository::ACTIVATION_TOKEN_SIZE);
+		$result = $this->repository->activate("brian@notthedomain.com", $token);
+		$this->assertFalse($result, 'The member should not have been activated.');		
+	}
+	
+	function testActivateIndicatesFailureForInvalidToken() {
+		$this->repository->add("Brian C.", "brian@domain.com", 'p@$$w0rd');
+		$result = $this->repository->activate("brian@domain.com", "boo");
+		$this->assertFalse($result, 'The member should not have been activated.');		
+	}
+	
+	function testAccountIsNotActivatedForInvalidInput() {
+		$this->repository->add("Brian C.", "brian@domain.com", 'p@$$w0rd');
+		$result = $this->repository->activate("brian@domain.com", "boo");
+		$statement = $this->database->query("select activated_on from user_accounts where email = 'brian@domain.com';");
+		$row = $statement->fetch();
+		$this->assertEqual($row['activated_on'], null);
+	}
+	
+	function testActivateIndicatesFailureWhenNoAccountExists() {
+		$result = $this->repository->activate("brian@domain.com", "boo");
+		$this->assertFalse($result, 'The member should not have been activated because s/he does not exist.');		
+	}
+	
 	function tearDown() {
 		// This can help with troubleshooting instead of rolling back.
 		//$this->database->commit();
