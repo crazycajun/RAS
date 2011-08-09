@@ -1,5 +1,6 @@
 <?php 
 
+require_once('utils/header_funcs.php');
 require_once('classes/Db.php');
 require_once('interfaces/iUserAccountRepository.php');
 require_once('interfaces/iPhpWebHelpers.php');
