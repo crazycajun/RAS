@@ -9,10 +9,10 @@ include('templates/header.php');
 <h3>Membership Login</h3>
 <form id="memberLoginForm" action="loginMember.php" method="post">
 	<p>
-		<?php echo rasRequiredLabel("Username", "memberUsername"); ?><br />
+		<?php echo rasRequiredLabel("Email", "memberEmail"); ?><br />
 		<?php echo rasRequiredTextField(array(
-			 'name' => 'memberUsername'
-			,'id' => 'memberUsername'
+			 'name' => 'memberEmail'
+			,'id' => 'memberEmail'
 		)); ?>
 	</p>
 	<p>
