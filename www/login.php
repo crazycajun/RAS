@@ -1,18 +1,23 @@
 <?php
 
 $pageName = 'login';
+require_once('classes/FlashMessenger.php');
 require_once('utils/forms.php');
 include('templates/header.php'); 
 
 ?>
 
 <h3>Membership Login</h3>
+
+<?php rasFlash(); ?>
+
 <form id="memberLoginForm" action="loginMember.php" method="post">
 	<p>
 		<?php echo rasRequiredLabel("Email", "memberEmail"); ?><br />
 		<?php echo rasRequiredTextField(array(
 			 'name' => 'memberEmail'
 			,'id' => 'memberEmail'
+			,'value' => $_GET['e']
 		)); ?>
 	</p>
 	<p>
