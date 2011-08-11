@@ -1,6 +1,11 @@
 <?php
 
+// This class is responsible for parsing the raw contents returned from the
+// search REST API.
 class UsaSearchResultParser {
+	
+	// Takes the raw HTTP response from the REST API and translates it into an
+	// instance of a SearchResult.
 	function parse($apiResponse) {
 		$jsonResponse = json_decode($apiResponse);
 		
@@ -11,6 +16,7 @@ class UsaSearchResultParser {
 		return $this->parseError($jsonResponse);
 	}
 	
+	// The method used to parse successful search results.
 	function parseSuccess($json) {
 		$searchResult = new SearchResult();
 		$searchResult->success = true;
@@ -27,6 +33,7 @@ class UsaSearchResultParser {
 		return $searchResult;
 	}
 	
+	// The method used to parse failed search attempts.
 	function parseError($json) {
 		$searchResult = new SearchResult();
 		$searchResult->success = false;
@@ -36,6 +43,8 @@ class UsaSearchResultParser {
 		return $searchResult;
 	}
 	
+	// This method encapsulates the logic for converting a REST recall record
+	// into a ProductInfo instance for use within the RAS application.
 	function parseRecord($record) {
 		$info = new ProductInfo();
 		$info->manufacturer = $record->manufacturer;

@@ -1,15 +1,5 @@
 <?php
 
-/*
- *	team members:	Brian Chiasson, Dan Buhrman
- *	date:			2011-07-31 
- *		
- * 	description:	This file contains the primary validator class that is 
- * 	used by the system tasks to validate the post input. The classes below
- * 	the validator are helper classes for the fluent API.
- *		
- */
-
 // The validation builder used in all form tasks to perform input validation.
 class Validator {
 	private $validators = array();
