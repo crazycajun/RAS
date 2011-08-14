@@ -13,7 +13,10 @@
 	require_once('usa_search/CurlRestApi.php');
 	require_once('usa_search/UsaSearchResultParser.php');
 	require_once('usa_search/UsaSearch.php');
-		
+	
+	echo "<div id=\"search\">\n";
+	echo "<h1>Recall Search</h1>\n";
+	echo "<p>Enter your search criteria below. You may either enter a search query, specific auto details, or a mixture of both.</p>\n";
 	
 	// Create the auto search form and display it.
 	$autoSearchForm = new AutoSearchForm();
@@ -27,6 +30,8 @@
 		$results = $usaSearch->search($query);
 		$autoSearchForm->echoResults($results);
 	}
+	
+	echo "</div>\n";
 	
 	// Include the footer.
 	include_once('templates/footer.php');

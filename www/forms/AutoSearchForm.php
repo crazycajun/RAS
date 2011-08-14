@@ -3,23 +3,29 @@
 // Automobile Search Form.
 class AutoSearchForm implements SearchForm {
 	
+	private $query;
+	
 	public function echoForm($action) {
-		echo "<form action=$action method=\"get\">";
+		echo "<p><form action=$action method=\"get\">";
 		
+		$query="";
 		$make="";
 		$model="";
 		$year="";
 		
 		if(!empty($_GET)) {
+			$query = $_GET['query'];
 			$make = $_GET['make'];
 			$model = $_GET['model'];
 			$year = $_GET['year'];
 		}
 		
-		echo "Make: <input type=\"text\" name=\"make\" value=\"$make\" /><br />";
-		echo "Model: <input type=\"text\" name=\"model\" value=\"$model\" /><br />";
-		echo "Year: <input type=\"text\" name=\"year\" value=\"$year\" /><br />";
-		echo "<input type=\"submit\" value=\"Submit\" /></form>";
+		echo "Query:&nbsp;<input type=\"text\" name=\"query\" value=\"$query\" size=\"30\" /><br />";
+		echo "Make:&nbsp;<input type=\"text\" name=\"make\" value=\"$make\" size=\"15\" />";
+		echo "Model:&nbsp;<input type=\"text\" name=\"model\" value=\"$model\" size=\"15\" />";
+		echo "Year:&nbsp;<input type=\"text\" name=\"year\" value=\"$year\" size=\"4\" maxlength=\"4\" />";
+		echo "<input type=\"hidden\" name=\"page\" value=\"" . (isset($this->query) ? $this->query->page : 1) . "\" />\n";
+		echo "<br /><button type=\"submit\">Submit</button></form></p>";
 	}
 	
 	public function buildSearchQuery() {
@@ -27,22 +33,31 @@ class AutoSearchForm implements SearchForm {
 			throw new Exception("No form submitted.");
 		}
 		
-		$query = new Query();
+		$this->query = new Query();
 		
 		$autoDetails = new AutoDetails();
 		$autoDetails->make = $_GET['make'];
 		$autoDetails->model = $_GET['model'];
 		$autoDetails->year = $_GET['year'];
 		
-		$query->autoDetails = $autoDetails;
+		$this->query->autoDetails = $autoDetails;
+		$this->query->searchTerm = $_GET['query'];
+		$this->query->page = $_GET['page'];
 		
-		return $query;
+		return $this->query;
 	}
 	
 	public function echoResults($results) {
-		if($results->success) {
-			echo "<h1>Results</h1>";
-			echo "<table>\n";
+		if($results->totalMatches == 0) {
+			echo "<h2>No Results!</h2>";
+			echo "<p>Congradulations! We could find <em>no recalls</em> based on the search criteria.</p>\n";
+			echo "<p>This could mean a few things:\n";
+			echo "<ol><li>There actually are no recalls on the product you are searching for.</li>\n";
+			echo "<li>Your search query is too specific and is hiding a result you <em>are</em> searching for.</li>\n";
+			echo "<li>There is a recall, however, we have no record of it.</li></ol></p>\n";
+		} else if($results->success) {
+			echo "<h2>Results</h2>";
+			echo "<p><table>\n";
 			echo "\t<tr>";
 			echo "\t\t<th>Description</th>\n";
 			echo "\t\t<th>Manufacture</th>\n";
@@ -62,7 +77,8 @@ class AutoSearchForm implements SearchForm {
 					echo "\t\t<td>" . $rec->recallURL . "</td>\n";
 				echo "\t<tr>\n";
 			}
-			echo "</table>";
+			echo "</table></p>";
+			$this->echoPagination($results);
 		} else {
 			foreach($results->errors as $err) {
 				if($err->succeeded()) {
@@ -74,6 +90,46 @@ class AutoSearchForm implements SearchForm {
 				}
 			}
 		}
+	}
+	
+	private function echoPagination($results) {
+		if($results->totalMatches > 10) {
+			$curPage = $_GET['page'];
+			echo "<div align=\"center\"><p>\n";
+			if($curPage == 1) {
+				echo "&lt;&lt;First&nbsp;";
+				echo "&lt;Prev&nbsp;";
+			} else {
+				echo "<a href=\"" . $this->getSearchURI(1) . "\">&lt;&lt;First&nbsp;";
+				echo "<a href=\"" . $this->getSearchURI($curPage - 1) . "\">&lt;Prev&nbsp;";
+			}
+			
+			$totalPages = ceil($results->totalMatches/10);
+			
+			
+			for($page=1; $page<=$totalPages; $page++) {
+				if($page == $curPage) {
+					echo "$page&nbsp;";
+				} else {
+					echo "<a href=\"" . $this->getSearchURI($page) . "\">$page&nbsp;";
+				}
+			}
+			
+			if($curPage == $totalPages) {
+				echo "Next&gt;&nbsp;";
+				echo "Last&gt;&gt;&nbsp;";
+			} else {
+				echo "<a href=\"" . $this->getSearchURI($curPage + 1) . "\">Next&gt;&nbsp;";
+				echo "<a href=\"" . $this->getSearchURI($totalPages) . "\">Last&gt;&gt;&nbsp;";
+			}
+			echo "</p></div>\n";
+		}
+	}
+	
+	private function getSearchURI($page) {
+		return "search.php?query=" . $_GET['query'] . "&make=" . $_GET['make'] . 
+						"&model=" . $_GET['model'] . "&year=" . $_GET['year'] .
+						"&page=" . $page;
 	}
 }
 
