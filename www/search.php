@@ -4,6 +4,8 @@
 	$pageName="search";
 	include_once('templates/header.php');
 
+	require_once('classes/FlashMessenger.php');
+	require_once('utils/forms.php');
 	require_once('ApplicationConfiguration.php');
 	require_once('ProductInfo.php');
 	require_once('usa_search/Query.php');

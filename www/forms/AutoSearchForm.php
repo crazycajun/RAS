@@ -20,12 +20,51 @@ class AutoSearchForm implements SearchForm {
 			$year = $_GET['year'];
 		}
 		
-		echo "Query:&nbsp;<input type=\"text\" name=\"query\" value=\"$query\" size=\"30\" /><br />";
+		echo rasLabel("Query:&nbsp;", "query");
+		echo rasTextField(array(
+				'name' => 'query',
+				'id' => 'query',
+				'value' => $query,
+				'size' => 30
+			)) . "<br />";
+		
+		echo rasRequiredLabel("Year:&nbsp;", "year");
+		echo rasRequiredTextField(array(
+				'name' => 'year',
+				'id' => 'year',
+				'value' => $year,
+				'size' => '4',
+				'maxlength' => '4'
+			));
+		
+		echo rasLabel("Make:&nbsp;", "make");
+		echo rasTextField(array(
+				'name' => 'make',
+				'id' => 'id',
+				'value' => $make,
+				'size' => '15'
+			));
+		
+		echo rasLabel("Model:&nbsp;", "model");
+		echo rasTextField(array(
+				'name' => 'model',
+				'id' => 'model',
+				'value' => $model,
+				'size' => '15'
+			));
+		
+		echo rasInputField("hidden", array(
+				'name' => 'page',
+				'id' => 'page',
+				'value' => (isset($this->query) ? $this->query->page : 1)
+			));
+		
+		/*echo "Query:&nbsp;<input type=\"text\" name=\"query\" value=\"$query\" size=\"30\" /><br />";
 		echo "Make:&nbsp;<input type=\"text\" name=\"make\" value=\"$make\" size=\"15\" />";
 		echo "Model:&nbsp;<input type=\"text\" name=\"model\" value=\"$model\" size=\"15\" />";
 		echo "Year:&nbsp;<input type=\"text\" name=\"year\" value=\"$year\" size=\"4\" maxlength=\"4\" />";
 		echo "<input type=\"hidden\" name=\"page\" value=\"" . (isset($this->query) ? $this->query->page : 1) . "\" />\n";
-		echo "<br /><button type=\"submit\">Submit</button></form></p>";
+		*/echo "<br /><button type=\"submit\">Submit</button></form></p>";
 	}
 	
 	public function buildSearchQuery() {
